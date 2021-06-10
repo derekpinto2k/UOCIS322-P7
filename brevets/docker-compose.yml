@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+    brevetsapp:
+        build: brevetsapp/
+        command: python -u flask_brevets.py
+        ports:
+            - "5000:5000"
+        depends_on:
+            - ourdb
+        environment:
+            MONGODB_HOSTNAME: ourdb
+    restapi:
+        build: api/
+        command: python -u api.py
+        ports:
+            - "5001:5000"
+        depends_on:
+            - ourdb
+        environment:
+            MONGODB_HOSTNAME: ourdb
+    website:
+        build: website/
+        command: python -u website.py
+        ports:
+            - "5002:5000"
+        depends_on:
+            - ourdb
+        environment:
+            MONGODB_HOSTNAME: ourdb
+    ourdb:
+        image: mongo:latest
